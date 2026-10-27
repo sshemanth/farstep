@@ -8,7 +8,7 @@ A multi-page website for a study abroad consultancy and EdTech company.
 
 | Page | What it does |
 | --- | --- |
-| `/` Home | 3D globe hero with a "book free counselling" form, stats, countries + course search, services, a scroll-pinned "5 steps" journey, partner universities, student reviews, FAQ |
+| `/` Home | 3D globe hero with a "book free counselling" form, countries + course search, services, a scroll-pinned "5 steps" journey, FAQ |
 | `/study-abroad` | All destinations |
 | `/study-abroad/uk` (and `usa`, `canada`, `australia`, `ireland`, `germany`, `new-zealand`) | Country pages: lead form, key facts, why study there, cities, courses, FAQ |
 | `/services` | Applications, test prep, student visas, education loans |
@@ -31,23 +31,24 @@ Open http://localhost:3000.
 
 1. **Brand name and contact details** — edit `src/lib/site.ts`. "Farstep" is a placeholder name.
 2. **Service text, journey steps, FAQ** — edit `src/lib/content.ts`.
-3. **Courses** — `src/lib/courses.ts` holds **sample** listings only. Replace them with your real course data (or call your course API). If you run a separate course-search platform, put its link in `courseFinderUrl` in `site.ts`.
+3. **Courses** — add or edit courses in `src/lib/courses.ts`. If you run a separate course-search platform, put its link in `courseFinderUrl` in `site.ts`.
 4. **Country pages** — edit `src/lib/countries.ts`. Visa and work rules change often, so review it regularly.
-5. **Stats, partner universities, student reviews** — edit `src/lib/proof.ts`. These ship with **sample** content. While `isSample = true`, they only show when you run `npm run dev` (with a "Sample" label) and are **hidden on the live site**. Add your real numbers, real partners and real reviews (with the students' permission), then set `isSample = false`.
-6. **Colours and fonts** — the `@theme` block at the top of `src/app/globals.css`.
-7. **Logo** — `src/components/logo.tsx` and `src/app/icon.svg`.
+5. **Colours and fonts** — the `@theme` block at the top of `src/app/globals.css`.
+6. **Logo** — `src/components/logo.tsx` and `src/app/icon.svg`.
 
-## Contact form emails
+## Contact form emails (required)
 
-Both the contact page form and the "book free counselling" forms post to `src/app/api/contact/route.ts`. Each enquiry includes a `source` so you know which form it came from. To get enquiries by email, create a free account at [resend.com](https://resend.com), verify your domain, then add these environment variables (in Vercel: Project → Settings → Environment Variables):
+Every form on the site sends you an email through [Resend](https://resend.com). Set these three environment variables in Vercel (Project → Settings → Environment Variables), then redeploy:
 
-```
-RESEND_API_KEY=re_xxx
-CONTACT_TO_EMAIL=you@yourdomain.com
-CONTACT_FROM_EMAIL=Website <hello@yourdomain.com>
-```
+| Name | Value |
+| --- | --- |
+| `RESEND_API_KEY` | Your API key from Resend (starts with `re_`) |
+| `CONTACT_TO_EMAIL` | The email that receives enquiries |
+| `CONTACT_FROM_EMAIL` | `Farstep <onboarding@resend.dev>` until you have your own domain |
 
-Without them, the form still works, but enquiries are only written to the server log.
+**No domain yet?** Use `onboarding@resend.dev` as the sender. Resend only lets it send to the email you signed up with, so set `CONTACT_TO_EMAIL` to that same email. When you buy a domain, verify it in Resend and change the sender to something like `Farstep <hello@yourdomain.com>`.
+
+If these are missing on the live site, the forms show an error and ask visitors to email you, so no enquiry is lost silently. When running locally (`npm run dev`), enquiries are printed in the terminal instead.
 
 ## Deploy to Vercel (easiest)
 

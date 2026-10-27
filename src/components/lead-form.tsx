@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { countries } from "@/lib/courses";
+import { site } from "@/lib/site";
 
 type Field = "name" | "email" | "phone";
 type Errors = Partial<Record<Field | "form", string>>;
@@ -46,11 +47,11 @@ export function LeadForm({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...data, source: "Free counselling form" }),
       });
-      if (!res.ok) throw new Error();
+      if (!res.ok) throw new Error(String(res.status));
       setStatus("sent");
     } catch {
       setStatus("idle");
-      setErrors({ form: "Your request didn’t send. Check your connection and try again." });
+      setErrors({ form: `Your request didn’t send. Try again, or email us at ${site.email}.` });
     }
   }
 

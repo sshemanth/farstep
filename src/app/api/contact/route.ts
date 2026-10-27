@@ -3,7 +3,8 @@
 //   RESEND_API_KEY     – API key from https://resend.com
 //   CONTACT_TO_EMAIL   – where enquiries should go
 //   CONTACT_FROM_EMAIL – a sender on a domain you verified in Resend (e.g. "Website <hello@yourdomain.com>")
-// Without them, enquiries are only logged on the server.
+// Without them, the form shows an error on the live site (so no enquiry is lost silently).
+// During local development (npm run dev) enquiries are printed in the terminal instead.
 
 const clean = (v: unknown, max = 2000) => (typeof v === "string" ? v.trim().slice(0, max) : "");
 
@@ -37,29 +38,38 @@ export async function POST(request: Request) {
 
   const { RESEND_API_KEY, CONTACT_TO_EMAIL, CONTACT_FROM_EMAIL } = process.env;
   if (!RESEND_API_KEY || !CONTACT_TO_EMAIL || !CONTACT_FROM_EMAIL) {
-    console.log("New enquiry (email not configured):", enquiry);
-    return Response.json({ ok: true });
+    if (process.env.NODE_ENV !== "production") {
+      console.log("New enquiry (email not set up yet):", enquiry);
+      return Response.json({ ok: true });
+    }
+    console.error("Contact form: RESEND_API_KEY, CONTACT_TO_EMAIL and CONTACT_FROM_EMAIL must be set.");
+    return Response.json({ error: "not_configured" }, { status: 503 });
   }
 
   const text = Object.entries(enquiry)
     .map(([k, v]) => `${k}: ${v || "-"}`)
     .join("\n");
 
-  const res = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: { Authorization: `Bearer ${RESEND_API_KEY}`, "Content-Type": "application/json" },
-    body: JSON.stringify({
-      from: CONTACT_FROM_EMAIL,
-      to: [CONTACT_TO_EMAIL],
-      reply_to: enquiry.email,
-      subject: `New session request from ${enquiry.name}`,
-      text,
-    }),
-  });
-
-  if (!res.ok) {
-    console.error("Resend error", res.status, await res.text());
-    return Response.json({ error: "Could not send." }, { status: 502 });
+  try {
+    const res = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${RESEND_API_KEY}`, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        from: CONTACT_FROM_EMAIL,
+        to: [CONTACT_TO_EMAIL],
+        reply_to: enquiry.email,
+        subject: `New enquiry from ${enquiry.name} (${enquiry.source})`,
+        text,
+      }),
+    });
+    if (!res.ok) {
+      console.error("Resend error", res.status, await res.text());
+      return Response.json({ error: "send_failed" }, { status: 502 });
+    }
+  } catch (err) {
+    console.error("Resend request failed", err);
+    return Response.json({ error: "send_failed" }, { status: 502 });
   }
+
   return Response.json({ ok: true });
 }

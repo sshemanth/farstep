@@ -1,6 +1,4 @@
-// SAMPLE course listings for the Course finder page.
-// Replace this with data from your course database or API before going live,
-// and always confirm details (fees, intakes, entry requirements) with the university.
+// Courses shown on the Course finder page. Add, remove or edit courses here.
 
 export type Course = {
   id: string;

@@ -137,7 +137,7 @@ export function CourseFinder() {
         )}
       </div>
       <p className="mt-2 text-sm text-ink/70">
-        Sample listings. Always check entry requirements, fees and intakes on the university’s website, or ask us.
+        Ask us about entry requirements, fees and intakes for any course.
         {site.courseFinderUrl && (
           <>
             {" "}

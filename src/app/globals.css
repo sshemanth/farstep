@@ -24,12 +24,6 @@
   --text-lede--line-height: 1.55;
 }
 
-@keyframes marquee {
-  to {
-    transform: translateX(-50%);
-  }
-}
-
 @layer base {
   html {
     scroll-behavior: smooth;

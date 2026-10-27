@@ -4,6 +4,7 @@ import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { countries, courses } from "@/lib/courses";
 import { services } from "@/lib/content";
+import { site } from "@/lib/site";
 
 type Errors = Partial<Record<"name" | "email" | "message" | "form", string>>;
 
@@ -44,12 +45,12 @@ export function ContactForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
-      if (!res.ok) throw new Error();
+      if (!res.ok) throw new Error(String(res.status));
       setSentName(data.name.trim().split(" ")[0]);
       setStatus("sent");
     } catch {
       setStatus("idle");
-      setErrors({ form: `Your message didn’t send. Check your connection and try again.` });
+      setErrors({ form: `Your message didn’t send. Try again, or email us at ${site.email}.` });
     }
   }
 
