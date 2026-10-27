@@ -1,6 +1,6 @@
 # Farstep — study abroad consultancy website
 
-A multi-page website for a study abroad consultancy and EdTech company.
+A multi-page website for a study abroad consultancy.
 
 **Built with:** Next.js 16 (App Router) · Tailwind CSS 4 · GSAP (ScrollTrigger + SplitText) · Three.js (via React Three Fiber) · TypeScript
 
@@ -8,9 +8,9 @@ A multi-page website for a study abroad consultancy and EdTech company.
 
 | Page | What it does |
 | --- | --- |
-| `/` Home | 3D globe hero with a "book free counselling" form, countries + course search, services, a scroll-pinned "5 steps" journey, FAQ |
+| `/` Home | 3D globe hero with a "book free counselling" form, countries + university search, services, a scroll-pinned "5 steps" journey, FAQ |
 | `/study-abroad` | All destinations |
-| `/study-abroad/uk` (and `usa`, `canada`, `australia`, `ireland`, `germany`, `new-zealand`) | Country pages: lead form, key facts, why study there, cities, courses, FAQ |
+| `/study-abroad/uk` (and `usa`, `canada`, `australia`, `ireland`, `germany`, `new-zealand`) | Country pages: lead form, key facts, why study there, cities, university search, FAQ |
 | `/services` | Applications, test prep, student visas, education loans |
 | `/universities` | Search 3,100+ universities and colleges in 7 countries, filter by country |
 | `/about` | Story and how you work |
