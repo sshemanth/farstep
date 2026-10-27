@@ -10,7 +10,7 @@ A multi-page website for a study abroad consultancy.
 | --- | --- |
 | `/` Home | 3D globe hero with a "book free counselling" form, countries, services, a scroll-pinned "5 steps" journey, FAQ |
 | `/study-abroad` | All destinations |
-| `/study-abroad/uk` (and `usa`, `canada`, `australia`, `ireland`, `germany`, `new-zealand`) | Country pages: lead form, key facts, why study there, cities, popular universities, FAQ |
+| `/study-abroad/uk` (and `usa`, `canada`, `australia`, `ireland`, `germany`, `new-zealand`) | Country pages: lead form, key facts, why study there, cities, popular universities, latest news, FAQ |
 | `/services` | Applications, test prep, student visas, education loans |
 | `/universities` | Popular universities in each country with logos, plus links to search more on QS TopUniversities |
 | `/about` | Story and how you work |
@@ -42,11 +42,12 @@ If a deployment fails (red in Vercel), open it to see the error. Usually it's a 
 
 | What you want to change | File |
 | --- | --- |
-| Business name, email, phone, WhatsApp | `src/lib/site.ts` |
+| Business name, phone, WhatsApp | `src/lib/site.ts` |
 | Menu links | `src/lib/site.ts` (`nav`) |
 | Services, the 5 journey steps, home page FAQ | `src/lib/content.ts` |
 | Country pages (intakes, visas, cities, FAQs) | `src/lib/countries.ts` |
 | Universities list | `src/lib/universities.ts` |
+| News search words for each country | `src/lib/news.ts` |
 | A better logo file for a university | `src/lib/universities.ts` (`universityLogos`) + image in `public/logos/` |
 | About page text | `src/app/about/page.tsx` |
 | Colours and fonts | top of `src/app/globals.css` |
@@ -66,6 +67,10 @@ The list is in `src/lib/universities.ts`. Each line is one university:
 - To add one, copy a line and change it. To remove one, delete its line.
 - Logos load automatically from the university's website. If one doesn't show, check the website address. To hide a logo (for example if a university asks), add its name to `hideLogo` in the same file.
 - "Search more" buttons send students to QS TopUniversities. Those links are in `qsLinks` in the same file.
+
+### Latest news on country pages
+
+Each country page shows recent headlines from Google News (headline, source and date, linking to the original article). They refresh automatically every few hours — nothing to do. To change what kind of news appears, edit the search words for that country in `src/lib/news.ts`.
 
 ## Contact form emails (required)
 

@@ -51,13 +51,8 @@ export default function ContactPage() {
           </div>
 
           <div className="rounded-[1.75rem] bg-haze p-8">
-            <h2 className="font-sans text-lg font-bold">Prefer to reach us directly?</h2>
+            <h2 className="font-sans text-lg font-bold">Prefer to call or chat?</h2>
             <ul className="mt-4 space-y-2">
-              <li>
-                <a href={`mailto:${site.email}`} className="font-semibold break-all underline underline-offset-4">
-                  {site.email}
-                </a>
-              </li>
               <li>
                 <a href={`tel:+${site.phoneDigits}`} className="font-semibold underline underline-offset-4">
                   {site.phone}

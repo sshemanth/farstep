@@ -58,11 +58,6 @@ export function SiteFooter() {
           <h2 className="font-sans text-sm font-bold text-sun">Get in touch</h2>
           <ul className="mt-4 space-y-2 text-white/85">
             <li>
-              <a href={`mailto:${site.email}`} className="break-all hover:text-white hover:underline">
-                {site.email}
-              </a>
-            </li>
-            <li>
               <a href={`tel:+${site.phoneDigits}`} className="hover:text-white hover:underline">
                 {site.phone}
               </a>

@@ -7,6 +7,7 @@ import { CtaBand } from "@/components/cta-band";
 import { countryPages, getCountry, placeName, type Tone } from "@/lib/countries";
 import { qsLinks, universitiesIn } from "@/lib/universities";
 import { UniCard } from "@/components/uni-card";
+import { CountryNews, CountryNewsSkeleton } from "@/components/country-news";
 
 const toneClass: Record<Tone, string> = {
   sun: "bg-sun text-ink",
@@ -165,6 +166,18 @@ async function CountryContent({ params }: { params: PageProps<"/study-abroad/[sl
           </ul>
         </section>
       )}
+
+      <section aria-labelledby="news-title" className="mx-auto max-w-7xl px-4 pt-24 sm:px-6">
+        <h2 id="news-title" className="text-display">
+          Latest news
+        </h2>
+        <p className="mt-3 max-w-[60ch] text-ink/75">
+          Recent headlines about international students in {placeName(c.name)}.
+        </p>
+        <Suspense fallback={<CountryNewsSkeleton />}>
+          <CountryNews c={c} />
+        </Suspense>
+      </section>
 
       <section aria-labelledby="cfaq-title" className="mx-auto max-w-7xl px-4 py-24 sm:px-6">
         <div className="grid gap-10 lg:grid-cols-[1fr_1.6fr] lg:gap-16">

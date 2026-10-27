@@ -6,9 +6,10 @@ import { hideLogo, initials, universityLogos, type University } from "@/lib/univ
 // University logo, loaded live from the university's own website.
 // Tries several sources in order and falls back to an initials badge if none work:
 //   1. a logo file you added in src/lib/universities.ts (universityLogos)
-//   2. the site's high-quality app icon (apple-touch-icon)
-//   3. Google's site-icon service
-//   4. the site's own favicon.ico
+//   2. Google's site-icon service (www and plain address)
+//   3. the site's app icon (apple-touch-icon)
+//   4. DuckDuckGo's site-icon service
+//   5. the site's own favicon.ico
 type LogoSource = { src: string; minWidth: number };
 
 function logoSources(u: University): LogoSource[] {
@@ -23,12 +24,18 @@ function logoSources(u: University): LogoSource[] {
   }
   if (!host) return [];
   const bare = host.replace(/^www\./, "");
-  return [
+  const www = host.startsWith("www.") ? host : `www.${host}`;
+  // Google returns a 16px generic globe when it has nothing, so require more than 16px from it.
+  const google = (d: string) => ({ src: `https://www.google.com/s2/favicons?domain=${d}&sz=128`, minWidth: 17 });
+  const list: LogoSource[] = [
+    google(www),
+    google(bare),
     { src: `https://${host}/apple-touch-icon.png`, minWidth: 48 },
-    // Google returns a 16px generic globe when it has nothing, so require more than 16px.
-    { src: `https://www.google.com/s2/favicons?domain=${bare}&sz=128`, minWidth: 17 },
+    { src: `https://icons.duckduckgo.com/ip3/${host}.ico`, minWidth: 17 },
     { src: `https://${host}/favicon.ico`, minWidth: 16 },
   ];
+  // Drop exact duplicates (e.g. when the address already has no "www")
+  return list.filter((x, i) => list.findIndex((y) => y.src === x.src) === i);
 }
 
 const noop = () => () => {};

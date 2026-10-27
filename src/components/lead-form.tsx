@@ -51,7 +51,7 @@ export function LeadForm({
       setStatus("sent");
     } catch {
       setStatus("idle");
-      setErrors({ form: `Your request didn’t send. Try again, or email us at ${site.email}.` });
+      setErrors({ form: `Your request didn’t send. Try again, or call or WhatsApp us on ${site.phone}.` });
     }
   }
 

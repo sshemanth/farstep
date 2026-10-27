@@ -6,7 +6,6 @@ export const site = {
   description:
     "Study abroad consultancy. We help international students choose universities, apply, prepare for tests, get student visas and fund their studies.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://example.com",
-  email: "dasaridishwank0908@gmail.com",
   phone: "+91 93920 84263",
   // Same number in international format, digits only — used for tel: and WhatsApp links.
   phoneDigits: "919392084263",
