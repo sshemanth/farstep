@@ -5,7 +5,8 @@ import { notFound } from "next/navigation";
 import { LeadForm } from "@/components/lead-form";
 import { CtaBand } from "@/components/cta-band";
 import { countryPages, getCountry, placeName, type Tone } from "@/lib/countries";
-import { countFor } from "@/lib/universities";
+import { qsLinks, universitiesIn } from "@/lib/universities";
+import { UniCard } from "@/components/uni-card";
 
 const toneClass: Record<Tone, string> = {
   sun: "bg-sun text-ink",
@@ -54,7 +55,7 @@ async function CountryContent({ params }: { params: PageProps<"/study-abroad/[sl
   if (!c) notFound();
 
   const dark = c.tone === "cobalt";
-  const uniCount = countFor(c.code);
+  const unis = universitiesIn(c.code);
   const others = countryPages.filter((x) => x.slug !== c.slug);
 
   return (
@@ -125,7 +126,7 @@ async function CountryContent({ params }: { params: PageProps<"/study-abroad/[sl
       </section>
 
       <section aria-labelledby="cities-title" className="mx-auto max-w-7xl px-4 pt-24 sm:px-6">
-        <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
+        <div>
           <div>
             <h2 id="cities-title" className="text-title">
               Popular student cities
@@ -139,38 +140,31 @@ async function CountryContent({ params }: { params: PageProps<"/study-abroad/[sl
             </ul>
           </div>
 
-          <div className="on-dark rounded-[1.75rem] bg-ink p-8 text-white">
-            <h2 className="text-title">
-              {uniCount.toLocaleString("en")} universities and colleges in {placeName(c.name)}
-            </h2>
-            <p className="mt-3 text-white/80">Search them by name or state, then ask us which ones suit you.</p>
-            <form action="/universities" className="mt-6">
-              <input type="hidden" name="country" value={c.slug} />
-              <label htmlFor="country-uni-q" className="sr-only">
-                Search universities in {c.name}
-              </label>
-              <div className="flex rounded-full bg-white p-1.5 focus-within:ring-4 focus-within:ring-sun">
-                <input
-                  id="country-uni-q"
-                  name="q"
-                  type="search"
-                  placeholder={`Try “${c.cities[0]}”`}
-                  className="min-w-0 flex-1 rounded-full bg-transparent px-4 text-ink placeholder:text-ink/50 focus:outline-none"
-                />
-                <button type="submit" className="rounded-full bg-ink px-5 py-2.5 font-bold text-white hover:bg-cobalt">
-                  Search
-                </button>
-              </div>
-            </form>
-            <Link
-              href={`/universities?country=${c.slug}`}
-              className="mt-5 inline-block font-bold underline decoration-2 underline-offset-4"
-            >
-              See all {uniCount.toLocaleString("en")}
-            </Link>
-          </div>
         </div>
       </section>
+
+      {unis.length > 0 && (
+        <section aria-labelledby="unis-title" className="mx-auto max-w-7xl px-4 pt-24 sm:px-6">
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <h2 id="unis-title" className="text-display">
+              Popular universities
+            </h2>
+            <a
+              href={qsLinks.universities}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-bold underline decoration-2 underline-offset-4"
+            >
+              Search more on QS TopUniversities<span className="sr-only"> (opens in a new tab)</span>
+            </a>
+          </div>
+          <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {unis.map((u) => (
+              <UniCard key={u.n} u={u} />
+            ))}
+          </ul>
+        </section>
+      )}
 
       <section aria-labelledby="cfaq-title" className="mx-auto max-w-7xl px-4 py-24 sm:px-6">
         <div className="grid gap-10 lg:grid-cols-[1fr_1.6fr] lg:gap-16">

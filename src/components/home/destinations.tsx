@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Form from "next/form";
+import { qsLinks } from "@/lib/universities";
 import { countryPages } from "@/lib/countries";
 
 const ink = ["text-cobalt", "text-flamingo", "text-ink"];
@@ -17,23 +17,14 @@ export function Destinations() {
             Pick a country to see intakes, visas and what studying there is like. Or look up a university.
           </p>
 
-          <Form action="/universities" className="mt-8">
-            <label htmlFor="dest-q" className="text-sm font-bold">
-              Looking for a university?
-            </label>
-            <div className="mt-2 flex rounded-full bg-white p-1.5 ring-2 ring-ink focus-within:ring-4 focus-within:ring-cobalt">
-              <input
-                id="dest-q"
-                name="q"
-                type="search"
-                placeholder="Try “Melbourne”"
-                className="min-w-0 flex-1 rounded-full bg-transparent px-4 placeholder:text-ink/50 focus:outline-none"
-              />
-              <button type="submit" className="rounded-full bg-ink px-5 py-2.5 font-bold text-white hover:bg-cobalt">
-                Search
-              </button>
-            </div>
-          </Form>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Link href="/universities" className="btn btn-ink">
+              See popular universities
+            </Link>
+            <a href={qsLinks.programs} target="_blank" rel="noopener noreferrer" className="btn bg-white text-ink ring-2 ring-ink">
+              Search courses on QS<span className="sr-only"> (opens in a new tab)</span>
+            </a>
+          </div>
         </div>
 
         <ul className="flex flex-wrap items-center gap-x-6 gap-y-8">

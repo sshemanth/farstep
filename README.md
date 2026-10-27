@@ -8,11 +8,11 @@ A multi-page website for a study abroad consultancy.
 
 | Page | What it does |
 | --- | --- |
-| `/` Home | 3D globe hero with a "book free counselling" form, countries + university search, services, a scroll-pinned "5 steps" journey, FAQ |
+| `/` Home | 3D globe hero with a "book free counselling" form, countries, services, a scroll-pinned "5 steps" journey, FAQ |
 | `/study-abroad` | All destinations |
-| `/study-abroad/uk` (and `usa`, `canada`, `australia`, `ireland`, `germany`, `new-zealand`) | Country pages: lead form, key facts, why study there, cities, university search, FAQ |
+| `/study-abroad/uk` (and `usa`, `canada`, `australia`, `ireland`, `germany`, `new-zealand`) | Country pages: lead form, key facts, why study there, cities, popular universities, FAQ |
 | `/services` | Applications, test prep, student visas, education loans |
-| `/universities` | Search 3,100+ universities and colleges in 7 countries, filter by country |
+| `/universities` | Popular universities in each country with logos, plus links to search more on QS TopUniversities |
 | `/about` | Story and how you work |
 | `/contact` | "Book a free session" form (sends email when set up) |
 
@@ -46,8 +46,8 @@ If a deployment fails (red in Vercel), open it to see the error. Usually it's a 
 | Menu links | `src/lib/site.ts` (`nav`) |
 | Services, the 5 journey steps, home page FAQ | `src/lib/content.ts` |
 | Country pages (intakes, visas, cities, FAQs) | `src/lib/countries.ts` |
-| Universities list | `src/data/universities.json` (or regenerate, see below) |
-| University logos (only with permission) | `src/lib/universities.ts` (`universityLogos`) + image in `public/logos/` |
+| Universities list | `src/lib/universities.ts` |
+| A better logo file for a university | `src/lib/universities.ts` (`universityLogos`) + image in `public/logos/` |
 | About page text | `src/app/about/page.tsx` |
 | Colours and fonts | top of `src/app/globals.css` |
 | Logo | `src/components/logo.tsx` and `src/app/icon.svg` |
@@ -56,15 +56,16 @@ Only change the text between quote marks `"like this"`. Keep the quotes, commas 
 
 ### Universities list
 
-The list comes from the open-source [university-domains-list](https://github.com/Hipo/university-domains-list) (MIT licence). To refresh it, run on your computer:
+The list is in `src/lib/universities.ts`. Each line is one university:
 
-```bash
-node scripts/make-universities.mjs
+```ts
+{ n: "University of Melbourne", city: "Melbourne", c: "AUS", w: "https://www.unimelb.edu.au" },
 ```
 
-then commit the updated `src/data/universities.json`. To remove a university, delete its `{ ... }` entry in that file.
-
-**Logos:** universities usually allow only approved agents to use their logos. When a university gives you permission and a logo file, put it in `public/logos/` and add a line to `universityLogos` in `src/lib/universities.ts`, e.g. `"University of Example": "/logos/example.svg",`.
+- `n` name, `city` city, `c` country code (`UK`, `USA`, `CAN`, `AUS`, `IRL`, `GER`, `NZ`), `w` official website.
+- To add one, copy a line and change it. To remove one, delete its line.
+- Logos load automatically from the university's website. If one doesn't show, check the website address. To hide a logo (for example if a university asks), add its name to `hideLogo` in the same file.
+- "Search more" buttons send students to QS TopUniversities. Those links are in `qsLinks` in the same file.
 
 ## Contact form emails (required)
 

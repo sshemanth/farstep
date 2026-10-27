@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { services, type Service } from "@/lib/content";
 import { countryPages } from "@/lib/countries";
-import { universities } from "@/lib/universities";
 
 const toneClass: Record<Service["tone"], string> = {
   sun: "bg-sun",
@@ -47,17 +46,16 @@ export function ServicesBento() {
 
         <article className="on-dark flex flex-col justify-between rounded-[1.75rem] bg-ink p-7 text-white sm:p-9 lg:row-span-2">
           <div>
-            <h3 className="text-title">University search</h3>
+            <h3 className="text-title">Popular universities</h3>
             <p className="mt-3 text-white/80">
-              Browse {(Math.floor(universities.length / 100) * 100).toLocaleString("en")}+ universities and colleges
-              across 7 countries.
+              Well-known universities in each of our 7 countries, with links to search thousands more.
             </p>
           </div>
           <ul className="my-8 flex flex-wrap gap-2" aria-label="Browse by country">
             {countryPages.map((c, i) => (
               <li key={c.slug}>
                 <Link
-                  href={`/universities?country=${c.slug}`}
+                  href={`/universities#${c.slug}`}
                   className={`inline-block rounded-full px-3.5 py-1.5 text-sm font-bold text-ink ${
                     ["bg-sun", "bg-flamingo", "bg-mint", "bg-white", "bg-haze"][i % 5]
                   }`}
@@ -68,7 +66,7 @@ export function ServicesBento() {
             ))}
           </ul>
           <Link href="/universities" className="btn btn-sun w-fit">
-            Browse universities
+            See universities
           </Link>
         </article>
 

@@ -75,7 +75,7 @@ export const journey = [
   {
     step: 1,
     title: "Find the right course",
-    body: "We match your grades, budget and goals to courses and countries. Browse universities, then refine your shortlist with a counsellor.",
+    body: "We match your grades, budget and goals to courses and countries. Look through popular universities, then refine your shortlist with a counsellor.",
     result: "A shortlist you trust",
     tone: "sun",
   },
