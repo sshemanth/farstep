@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { services, type Service } from "@/lib/content";
-import { subjects } from "@/lib/courses";
+import { countryPages } from "@/lib/countries";
+import { universities } from "@/lib/universities";
 
 const toneClass: Record<Service["tone"], string> = {
   sun: "bg-sun",
@@ -46,27 +47,28 @@ export function ServicesBento() {
 
         <article className="on-dark flex flex-col justify-between rounded-[1.75rem] bg-ink p-7 text-white sm:p-9 lg:row-span-2">
           <div>
-            <h3 className="text-title">Course finder</h3>
+            <h3 className="text-title">University search</h3>
             <p className="mt-3 text-white/80">
-              Search courses by country, level and subject. Free, and no sign-up.
+              Browse {(Math.floor(universities.length / 100) * 100).toLocaleString("en")}+ universities and colleges
+              across 7 countries.
             </p>
           </div>
-          <ul className="my-8 flex flex-wrap gap-2" aria-label="Browse by subject">
-            {subjects.map((s, i) => (
-              <li key={s}>
+          <ul className="my-8 flex flex-wrap gap-2" aria-label="Browse by country">
+            {countryPages.map((c, i) => (
+              <li key={c.slug}>
                 <Link
-                  href={`/course-finder?subject=${encodeURIComponent(s)}`}
+                  href={`/universities?country=${c.slug}`}
                   className={`inline-block rounded-full px-3.5 py-1.5 text-sm font-bold text-ink ${
                     ["bg-sun", "bg-flamingo", "bg-mint", "bg-white", "bg-haze"][i % 5]
                   }`}
                 >
-                  {s}
+                  {c.name}
                 </Link>
               </li>
             ))}
           </ul>
-          <Link href="/course-finder" className="btn btn-sun w-fit">
-            Open the course finder
+          <Link href="/universities" className="btn btn-sun w-fit">
+            Browse universities
           </Link>
         </article>
 

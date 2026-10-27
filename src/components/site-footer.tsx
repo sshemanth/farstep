@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Logo } from "./logo";
-import { nav, site } from "@/lib/site";
+import { nav, site, whatsappUrl } from "@/lib/site";
 import { services } from "@/lib/content";
 import { countryPages } from "@/lib/countries";
 
@@ -11,7 +11,7 @@ export function SiteFooter() {
         <div className="max-w-xs">
           <Logo light />
           <p className="mt-4 text-white/75">
-            Study abroad consultancy and course search, for students going anywhere.
+            Study abroad consultancy for students going anywhere.
           </p>
         </div>
 
@@ -58,22 +58,20 @@ export function SiteFooter() {
           <h2 className="font-sans text-sm font-bold text-sun">Get in touch</h2>
           <ul className="mt-4 space-y-2 text-white/85">
             <li>
-              <a href={`mailto:${site.email}`} className="hover:text-white hover:underline">
+              <a href={`mailto:${site.email}`} className="break-all hover:text-white hover:underline">
                 {site.email}
               </a>
             </li>
             <li>
-              <a href={`tel:${site.phone.replace(/\s/g, "")}`} className="hover:text-white hover:underline">
+              <a href={`tel:+${site.phoneDigits}`} className="hover:text-white hover:underline">
                 {site.phone}
               </a>
             </li>
-            {site.socials.map((s) => (
-              <li key={s.label}>
-                <a href={s.href} className="hover:text-white hover:underline">
-                  {s.label}
-                </a>
-              </li>
-            ))}
+            <li>
+              <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="hover:text-white hover:underline">
+                Chat on WhatsApp
+              </a>
+            </li>
           </ul>
         </div>
       </div>

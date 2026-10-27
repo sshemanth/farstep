@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { countries } from "@/lib/courses";
+import { destinationNames } from "@/lib/countries";
 import { site } from "@/lib/site";
 
 type Field = "name" | "email" | "phone";
@@ -103,7 +103,7 @@ export function LeadForm({
               </label>
               <select id={id("destination")} name="destination" defaultValue={defaultCountry} className={input}>
                 <option value="">Where do you want to study?</option>
-                {countries.map((c) => (
+                {destinationNames.map((c) => (
                   <option key={c}>{c}</option>
                 ))}
               </select>

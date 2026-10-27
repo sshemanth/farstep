@@ -8,14 +8,14 @@ export default function NotFound() {
       </p>
       <h1 className="mt-10 text-display">This page took a different flight.</h1>
       <p className="mx-auto mt-4 max-w-md text-lede text-ink/80">
-        The link may be old, or the page has moved. Try the home page or search for a course.
+        The link may be old, or the page has moved. Try the home page or browse universities.
       </p>
       <div className="mt-8 flex flex-wrap justify-center gap-3">
         <Link href="/" className="btn btn-sun">
           Go to the home page
         </Link>
-        <Link href="/course-finder" className="btn btn-ink">
-          Search courses
+        <Link href="/universities" className="btn btn-ink">
+          Browse universities
         </Link>
       </div>
     </section>

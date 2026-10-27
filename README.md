@@ -12,7 +12,7 @@ A multi-page website for a study abroad consultancy and EdTech company.
 | `/study-abroad` | All destinations |
 | `/study-abroad/uk` (and `usa`, `canada`, `australia`, `ireland`, `germany`, `new-zealand`) | Country pages: lead form, key facts, why study there, cities, courses, FAQ |
 | `/services` | Applications, test prep, student visas, education loans |
-| `/course-finder` | Search and filter courses by country, level and subject |
+| `/universities` | Search 3,100+ universities and colleges in 7 countries, filter by country |
 | `/about` | Story and how you work |
 | `/contact` | "Book a free session" form (sends email when set up) |
 
@@ -27,14 +27,44 @@ npm run dev
 
 Open http://localhost:3000.
 
-## Make it yours
+## How to edit the site
 
-1. **Brand name and contact details** — edit `src/lib/site.ts`. "Farstep" is a placeholder name.
-2. **Service text, journey steps, FAQ** — edit `src/lib/content.ts`.
-3. **Courses** — add or edit courses in `src/lib/courses.ts`. If you run a separate course-search platform, put its link in `courseFinderUrl` in `site.ts`.
-4. **Country pages** — edit `src/lib/countries.ts`. Visa and work rules change often, so review it regularly.
-5. **Colours and fonts** — the `@theme` block at the top of `src/app/globals.css`.
-6. **Logo** — `src/components/logo.tsx` and `src/app/icon.svg`.
+The easiest way is right on GitHub — no software needed:
+
+1. Open your repository on github.com and click the file you want to change (list below).
+2. Click the **pencil icon** (Edit this file).
+3. Make your change, then click **Commit changes…** → **Commit changes**.
+4. Vercel sees the change and updates the live site in about 1–2 minutes. Check progress in Vercel → Deployments.
+
+If a deployment fails (red in Vercel), open it to see the error. Usually it's a missing quote or comma — undo your last edit on GitHub (History → revert) or fix the typo.
+
+### Which file to edit
+
+| What you want to change | File |
+| --- | --- |
+| Business name, email, phone, WhatsApp | `src/lib/site.ts` |
+| Menu links | `src/lib/site.ts` (`nav`) |
+| Services, the 5 journey steps, home page FAQ | `src/lib/content.ts` |
+| Country pages (intakes, visas, cities, FAQs) | `src/lib/countries.ts` |
+| Universities list | `src/data/universities.json` (or regenerate, see below) |
+| University logos (only with permission) | `src/lib/universities.ts` (`universityLogos`) + image in `public/logos/` |
+| About page text | `src/app/about/page.tsx` |
+| Colours and fonts | top of `src/app/globals.css` |
+| Logo | `src/components/logo.tsx` and `src/app/icon.svg` |
+
+Only change the text between quote marks `"like this"`. Keep the quotes, commas and brackets around it.
+
+### Universities list
+
+The list comes from the open-source [university-domains-list](https://github.com/Hipo/university-domains-list) (MIT licence). To refresh it, run on your computer:
+
+```bash
+node scripts/make-universities.mjs
+```
+
+then commit the updated `src/data/universities.json`. To remove a university, delete its `{ ... }` entry in that file.
+
+**Logos:** universities usually allow only approved agents to use their logos. When a university gives you permission and a logo file, put it in `public/logos/` and add a line to `universityLogos` in `src/lib/universities.ts`, e.g. `"University of Example": "/logos/example.svg",`.
 
 ## Contact form emails (required)
 
@@ -52,7 +82,7 @@ If these are missing on the live site, the forms show an error and ask visitors 
 
 ## Deploy to Vercel (easiest)
 
-1. Push this folder to a GitHub repository.
+1. Push this folder to a GitHub repository (GitHub Desktop → Add Local Repository → Publish).
 2. Go to [vercel.com/new](https://vercel.com/new) and import the repository. Vercel detects Next.js automatically — no settings needed.
 3. Add the email environment variables above.
 4. Add your own domain under Project → Settings → Domains.

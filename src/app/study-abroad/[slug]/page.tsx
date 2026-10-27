@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import { LeadForm } from "@/components/lead-form";
 import { CtaBand } from "@/components/cta-band";
 import { countryPages, getCountry, placeName, type Tone } from "@/lib/countries";
-import { courses } from "@/lib/courses";
+import { countFor } from "@/lib/universities";
 
 const toneClass: Record<Tone, string> = {
   sun: "bg-sun text-ink",
@@ -54,7 +54,7 @@ async function CountryContent({ params }: { params: PageProps<"/study-abroad/[sl
   if (!c) notFound();
 
   const dark = c.tone === "cobalt";
-  const popular = courses.filter((x) => x.country === c.name).slice(0, 4);
+  const uniCount = countFor(c.code);
   const others = countryPages.filter((x) => x.slug !== c.slug);
 
   return (
@@ -139,27 +139,36 @@ async function CountryContent({ params }: { params: PageProps<"/study-abroad/[sl
             </ul>
           </div>
 
-          {popular.length > 0 && (
-            <div>
-              <h2 className="text-title">Courses to explore</h2>
-              <ul className="mt-6 divide-y-2 divide-ink/10 border-y-2 border-ink/10">
-                {popular.map((p) => (
-                  <li key={p.id} className="py-4">
-                    <p className="font-display font-bold">{p.title}</p>
-                    <p className="text-sm text-ink/75">
-                      {p.university}, {p.city}
-                    </p>
-                  </li>
-                ))}
-              </ul>
-              <Link
-                href={`/course-finder?country=${encodeURIComponent(c.name)}`}
-                className="mt-5 inline-block font-bold underline decoration-2 underline-offset-4"
-              >
-                See all courses in {c.name}
-              </Link>
-            </div>
-          )}
+          <div className="on-dark rounded-[1.75rem] bg-ink p-8 text-white">
+            <h2 className="text-title">
+              {uniCount.toLocaleString("en")} universities and colleges in {placeName(c.name)}
+            </h2>
+            <p className="mt-3 text-white/80">Search them by name or state, then ask us which ones suit you.</p>
+            <form action="/universities" className="mt-6">
+              <input type="hidden" name="country" value={c.slug} />
+              <label htmlFor="country-uni-q" className="sr-only">
+                Search universities in {c.name}
+              </label>
+              <div className="flex rounded-full bg-white p-1.5 focus-within:ring-4 focus-within:ring-sun">
+                <input
+                  id="country-uni-q"
+                  name="q"
+                  type="search"
+                  placeholder={`Try “${c.cities[0]}”`}
+                  className="min-w-0 flex-1 rounded-full bg-transparent px-4 text-ink placeholder:text-ink/50 focus:outline-none"
+                />
+                <button type="submit" className="rounded-full bg-ink px-5 py-2.5 font-bold text-white hover:bg-cobalt">
+                  Search
+                </button>
+              </div>
+            </form>
+            <Link
+              href={`/universities?country=${c.slug}`}
+              className="mt-5 inline-block font-bold underline decoration-2 underline-offset-4"
+            >
+              See all {uniCount.toLocaleString("en")}
+            </Link>
+          </div>
         </div>
       </section>
 

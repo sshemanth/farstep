@@ -4,18 +4,15 @@ import { countryPages } from "./countries";
 export const site = {
   name: "Farstep",
   description:
-    "Study abroad consultancy and EdTech platform. We help international students find courses, apply to universities, prepare for tests, get student visas and fund their studies.",
+    "Study abroad consultancy. We help international students choose universities, apply, prepare for tests, get student visas and fund their studies.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://example.com",
-  email: "hello@example.com",
-  phone: "+00 000 000 0000",
-  // Optional: link to your own live course-search platform. Leave empty to use the built-in Course finder page.
-  courseFinderUrl: "",
-  socials: [
-    { label: "Instagram", href: "#" },
-    { label: "LinkedIn", href: "#" },
-    { label: "YouTube", href: "#" },
-  ],
+  email: "dasaridishwank0908@gmail.com",
+  phone: "+91 93920 84263",
+  // Same number in international format, digits only — used for tel: and WhatsApp links.
+  phoneDigits: "919392084263",
 };
+
+export const whatsappUrl = `https://wa.me/${site.phoneDigits}`;
 
 export const nav: { label: string; href: string; children?: { label: string; href: string }[] }[] = [
   {
@@ -24,7 +21,7 @@ export const nav: { label: string; href: string; children?: { label: string; hre
     children: countryPages.map((c) => ({ label: c.name, href: `/study-abroad/${c.slug}` })),
   },
   { label: "Services", href: "/services" },
-  { label: "Course finder", href: "/course-finder" },
+  { label: "Universities", href: "/universities" },
   { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" },
 ];

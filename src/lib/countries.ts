@@ -2,13 +2,22 @@
 // Facts here are general and slow-changing. Visa and work rules change often —
 // review this file regularly and keep your counsellors' advice as the source of truth.
 
-import type { Country as CourseCountry } from "./courses";
+export const destinationNames = [
+  "United Kingdom",
+  "United States",
+  "Canada",
+  "Australia",
+  "Ireland",
+  "Germany",
+  "New Zealand",
+] as const;
+export type Destination = (typeof destinationNames)[number];
 
 export type Tone = "sun" | "flamingo" | "mint" | "cobalt";
 
 export type CountryPage = {
   slug: string;
-  name: CourseCountry;
+  name: Destination;
   code: string;
   tone: Tone;
   headline: string;

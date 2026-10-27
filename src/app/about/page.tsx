@@ -22,7 +22,7 @@ const principles = [
   },
   {
     title: "Tools that save you time",
-    body: "Our course search and checklists do the busywork, so your sessions are spent on decisions, not admin.",
+    body: "Our university search and checklists do the busywork, so your sessions are spent on decisions, not admin.",
     tone: "bg-mint",
   },
 ];
@@ -48,7 +48,7 @@ export default function AboutPage() {
             </p>
             <p>
               We wanted something better: honest counselling, clear steps and tools that make the research quick. So we
-              built both — a team of counsellors and a course search platform — and made them work together.
+              built both — a team of counsellors and a university search tool — and made them work together.
             </p>
           </div>
         </div>
@@ -85,16 +85,15 @@ export default function AboutPage() {
               </Link>
             </div>
             <div>
-              <h3 className="text-title text-mint">Course finder</h3>
+              <h3 className="text-title text-mint">University search</h3>
               <p className="mt-4 text-white/85">
-                A free platform to search international courses by country, level and subject, and send good options
-                straight to your counsellor.
+                A free tool to browse thousands of universities and colleges in 7 countries, then talk your shortlist through with a counsellor.
               </p>
               <Link
-                href="/course-finder"
+                href="/universities"
                 className="mt-6 inline-block font-bold underline decoration-2 underline-offset-4"
               >
-                Search courses
+                Browse universities
               </Link>
             </div>
           </div>

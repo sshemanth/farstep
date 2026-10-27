@@ -4,7 +4,7 @@ import { countryPages } from "@/lib/countries";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const countries = countryPages.map((c) => `/study-abroad/${c.slug}`);
-  return ["", "/study-abroad", ...countries, "/services", "/course-finder", "/about", "/contact"].map((path) => ({
+  return ["", "/study-abroad", ...countries, "/services", "/universities", "/about", "/contact"].map((path) => ({
     url: `${site.url}${path}`,
   }));
 }

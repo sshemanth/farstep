@@ -2,7 +2,7 @@
 
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
-import { countries, courses } from "@/lib/courses";
+import { destinationNames } from "@/lib/countries";
 import { services } from "@/lib/content";
 import { site } from "@/lib/site";
 
@@ -14,9 +14,7 @@ const label = "mb-2 block font-bold";
 
 export function ContactForm() {
   const params = useSearchParams();
-  const course = courses.find((c) => c.id === params.get("course"));
   const serviceId = services.some((s) => s.id === params.get("service")) ? params.get("service")! : "";
-  const initialMessage = course ? `I’d like to know more about ${course.title} at ${course.university}.` : "";
 
   const [status, setStatus] = useState<"idle" | "sending" | "sent">("idle");
   const [errors, setErrors] = useState<Errors>({});
@@ -130,10 +128,10 @@ export function ContactForm() {
             id="destination"
             name="destination"
             className={field}
-            defaultValue={course?.country ?? ""}
+            defaultValue=""
           >
             <option value="">Not sure yet</option>
-            {countries.map((c) => (
+            {destinationNames.map((c) => (
               <option key={c}>{c}</option>
             ))}
           </select>
@@ -145,7 +143,7 @@ export function ContactForm() {
           <label htmlFor="service" className={label}>
             What do you need help with?
           </label>
-          <select id="service" name="service" className={field} defaultValue={serviceId || (course ? "applications" : "")}>
+          <select id="service" name="service" className={field} defaultValue={serviceId}>
             <option value="">A bit of everything</option>
             {services.map((s) => (
               <option key={s.id} value={s.id}>
@@ -175,7 +173,6 @@ export function ContactForm() {
           id="message"
           name="message"
           rows={5}
-          defaultValue={initialMessage}
           placeholder="What you’d like to study, your current qualification, any questions."
           className={field}
           aria-invalid={!!errors.message}

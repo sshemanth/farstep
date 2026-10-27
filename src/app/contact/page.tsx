@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { PageHero } from "@/components/page-hero";
 import { ContactForm } from "@/components/contact-form";
-import { site } from "@/lib/site";
+import { site, whatsappUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Book a free session",
@@ -54,13 +54,23 @@ export default function ContactPage() {
             <h2 className="font-sans text-lg font-bold">Prefer to reach us directly?</h2>
             <ul className="mt-4 space-y-2">
               <li>
-                <a href={`mailto:${site.email}`} className="font-semibold underline underline-offset-4">
+                <a href={`mailto:${site.email}`} className="font-semibold break-all underline underline-offset-4">
                   {site.email}
                 </a>
               </li>
               <li>
-                <a href={`tel:${site.phone.replace(/\s/g, "")}`} className="font-semibold underline underline-offset-4">
+                <a href={`tel:+${site.phoneDigits}`} className="font-semibold underline underline-offset-4">
                   {site.phone}
+                </a>
+              </li>
+              <li>
+                <a
+                  href={whatsappUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-ink mt-3 !bg-[#128c4a] !shadow-[0_4px_0_0_var(--color-ink)]"
+                >
+                  Chat on WhatsApp
                 </a>
               </li>
             </ul>

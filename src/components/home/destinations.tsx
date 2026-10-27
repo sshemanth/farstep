@@ -14,23 +14,23 @@ export function Destinations() {
             Where do you want to go?
           </h2>
           <p className="mt-4 text-ink/75">
-            Pick a country to see intakes, visas and what studying there is like. Or search for a course.
+            Pick a country to see intakes, visas and what studying there is like. Or look up a university.
           </p>
 
-          <Form action="/course-finder" className="mt-8">
+          <Form action="/universities" className="mt-8">
             <label htmlFor="dest-q" className="text-sm font-bold">
-              What do you want to study?
+              Looking for a university?
             </label>
             <div className="mt-2 flex rounded-full bg-white p-1.5 ring-2 ring-ink focus-within:ring-4 focus-within:ring-cobalt">
               <input
                 id="dest-q"
                 name="q"
                 type="search"
-                placeholder="Try “data science”"
+                placeholder="Try “Melbourne”"
                 className="min-w-0 flex-1 rounded-full bg-transparent px-4 placeholder:text-ink/50 focus:outline-none"
               />
               <button type="submit" className="rounded-full bg-ink px-5 py-2.5 font-bold text-white hover:bg-cobalt">
-                Search<span className="hidden sm:inline"> courses</span>
+                Search
               </button>
             </div>
           </Form>
