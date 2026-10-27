@@ -18,20 +18,43 @@ const counts = Object.fromEntries(
   countryPages.map((c) => [c.code, universities.filter((u) => u.c === c.code).length]),
 );
 
-// University logo: the university's own site icon, loaded live from its website address.
-// Falls back to an initials badge when there is no website, the icon fails, or it is too small to look good.
-function UniLogo({ u, tone }: { u: University; tone: string }) {
-  const [failed, setFailed] = useState(false);
+// University logo, loaded live from the university's own website.
+// Tries several sources in order and falls back to an initials badge if none work:
+//   1. a logo file you added in src/lib/universities.ts (universityLogos)
+//   2. the site's high-quality app icon (apple-touch-icon)
+//   3. Google's site-icon service
+//   4. the site's own favicon.ico
+type LogoSource = { src: string; minWidth: number };
+
+function logoSources(u: University): LogoSource[] {
+  if (hideLogo.has(u.n)) return [];
   const manual = universityLogos[u.n];
+  if (manual) return [{ src: manual, minWidth: 1 }];
   let host = "";
   try {
-    host = u.w ? new URL(u.w).hostname.replace(/^www\./, "") : "";
+    host = u.w ? new URL(u.w).hostname : "";
   } catch {
-    host = "";
+    return [];
   }
-  const src = hideLogo.has(u.n) ? "" : (manual ?? (host ? `https://www.google.com/s2/favicons?domain=${host}&sz=128` : ""));
+  if (!host) return [];
+  const bare = host.replace(/^www\./, "");
+  return [
+    { src: `https://${host}/apple-touch-icon.png`, minWidth: 48 },
+    // Google returns a 16px generic globe when it has nothing, so require more than 16px.
+    { src: `https://www.google.com/s2/favicons?domain=${bare}&sz=128`, minWidth: 17 },
+    { src: `https://${host}/favicon.ico`, minWidth: 16 },
+  ];
+}
 
-  if (!src || failed) {
+function UniLogo({ u, tone }: { u: University; tone: string }) {
+  const sources = logoSources(u);
+  const [index, setIndex] = useState(0);
+  const [small, setSmall] = useState(false);
+  const current = sources[index];
+  // Move to the next source once per failed source (an image can report an error more than once).
+  const next = () => setIndex((i) => (i === index ? i + 1 : i));
+
+  if (!current) {
     return (
       <span
         aria-hidden="true"
@@ -45,17 +68,19 @@ function UniLogo({ u, tone }: { u: University; tone: string }) {
     <span className="grid size-14 shrink-0 place-items-center rounded-2xl bg-white p-2 ring-1 ring-ink/10">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src={src}
+        key={current.src}
+        src={current.src}
         alt=""
         width={40}
         height={40}
         loading="lazy"
         referrerPolicy="no-referrer"
-        className="size-10 object-contain"
-        onError={() => setFailed(true)}
+        className={`object-contain ${small ? "size-7" : "size-10"}`}
+        onError={next}
         onLoad={(e) => {
-          // Tiny images are generic placeholders, not real logos.
-          if (!manual && e.currentTarget.naturalWidth < 32) setFailed(true);
+          const w = e.currentTarget.naturalWidth;
+          if (w < current.minWidth) next();
+          else setSmall(w < 40);
         }}
       />
     </span>
