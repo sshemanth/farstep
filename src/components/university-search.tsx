@@ -3,7 +3,7 @@
 import { useSearchParams } from "next/navigation";
 import { useDeferredValue, useMemo, useState } from "react";
 import { countryPages, type Tone } from "@/lib/countries";
-import { initials, universities, universityLogos } from "@/lib/universities";
+import { hideLogo, initials, universities, universityLogos, type University } from "@/lib/universities";
 
 const PAGE = 48;
 
@@ -17,6 +17,50 @@ const badgeTone: Record<Tone, string> = {
 const counts = Object.fromEntries(
   countryPages.map((c) => [c.code, universities.filter((u) => u.c === c.code).length]),
 );
+
+// University logo: the university's own site icon, loaded live from its website address.
+// Falls back to an initials badge when there is no website, the icon fails, or it is too small to look good.
+function UniLogo({ u, tone }: { u: University; tone: string }) {
+  const [failed, setFailed] = useState(false);
+  const manual = universityLogos[u.n];
+  let host = "";
+  try {
+    host = u.w ? new URL(u.w).hostname.replace(/^www\./, "") : "";
+  } catch {
+    host = "";
+  }
+  const src = hideLogo.has(u.n) ? "" : (manual ?? (host ? `https://www.google.com/s2/favicons?domain=${host}&sz=128` : ""));
+
+  if (!src || failed) {
+    return (
+      <span
+        aria-hidden="true"
+        className={`grid size-14 shrink-0 place-items-center rounded-2xl font-display text-lg font-black ${tone}`}
+      >
+        {initials(u.n)}
+      </span>
+    );
+  }
+  return (
+    <span className="grid size-14 shrink-0 place-items-center rounded-2xl bg-white p-2 ring-1 ring-ink/10">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={src}
+        alt=""
+        width={40}
+        height={40}
+        loading="lazy"
+        referrerPolicy="no-referrer"
+        className="size-10 object-contain"
+        onError={() => setFailed(true)}
+        onLoad={(e) => {
+          // Tiny images are generic placeholders, not real logos.
+          if (!manual && e.currentTarget.naturalWidth < 32) setFailed(true);
+        }}
+      />
+    </span>
+  );
+}
 
 export function UniversitySearch() {
   const params = useSearchParams();
@@ -106,22 +150,9 @@ export function UniversitySearch() {
           <ul className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {shown.map((u) => {
               const cp = countryPages.find((c) => c.code === u.c);
-              const logo = universityLogos[u.n];
               return (
                 <li key={`${u.c}-${u.n}`} className="flex gap-4 rounded-[1.25rem] bg-white p-5 ring-2 ring-ink/10">
-                  {logo ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={logo} alt="" className="size-14 shrink-0 rounded-2xl object-contain" />
-                  ) : (
-                    <span
-                      aria-hidden="true"
-                      className={`grid size-14 shrink-0 place-items-center rounded-2xl font-display text-lg font-black ${
-                        cp ? badgeTone[cp.tone] : "bg-haze"
-                      }`}
-                    >
-                      {initials(u.n)}
-                    </span>
-                  )}
+                  <UniLogo u={u} tone={cp ? badgeTone[cp.tone] : "bg-haze"} />
                   <div className="min-w-0">
                     <h2 className="font-display text-base leading-snug font-bold">{u.n}</h2>
                     <p className="mt-1 text-sm text-ink/70">{[u.s, cp?.name].filter(Boolean).join(", ")}</p>
@@ -162,7 +193,8 @@ export function UniversitySearch() {
         <a href="https://github.com/Hipo/university-domains-list" className="underline" target="_blank" rel="noopener noreferrer">
           university-domains-list
         </a>{" "}
-        (MIT licence). Listing a university here does not mean we are partnered with it.
+        (MIT licence). Logos are each university’s own website icon and belong to that university. Listing a
+        university here does not mean we are partnered with it.
       </p>
     </section>
   );
