@@ -8,7 +8,9 @@ A multi-page website for a study abroad consultancy and EdTech company.
 
 | Page | What it does |
 | --- | --- |
-| `/` Home | 3D globe hero with flight routes, countries, services, a scroll-pinned "5 steps" journey, FAQ |
+| `/` Home | 3D globe hero with a "book free counselling" form, stats, countries + course search, services, a scroll-pinned "5 steps" journey, partner universities, student reviews, FAQ |
+| `/study-abroad` | All destinations |
+| `/study-abroad/uk` (and `usa`, `canada`, `australia`, `ireland`, `germany`, `new-zealand`) | Country pages: lead form, key facts, why study there, cities, courses, FAQ |
 | `/services` | Applications, test prep, student visas, education loans |
 | `/course-finder` | Search and filter courses by country, level and subject |
 | `/about` | Story and how you work |
@@ -30,12 +32,14 @@ Open http://localhost:3000.
 1. **Brand name and contact details** — edit `src/lib/site.ts`. "Farstep" is a placeholder name.
 2. **Service text, journey steps, FAQ** — edit `src/lib/content.ts`.
 3. **Courses** — `src/lib/courses.ts` holds **sample** listings only. Replace them with your real course data (or call your course API). If you run a separate course-search platform, put its link in `courseFinderUrl` in `site.ts`.
-4. **Colours and fonts** — the `@theme` block at the top of `src/app/globals.css`.
-5. **Logo** — `src/components/logo.tsx` and `src/app/icon.svg`.
+4. **Country pages** — edit `src/lib/countries.ts`. Visa and work rules change often, so review it regularly.
+5. **Stats, partner universities, student reviews** — edit `src/lib/proof.ts`. These ship with **sample** content. While `isSample = true`, they only show when you run `npm run dev` (with a "Sample" label) and are **hidden on the live site**. Add your real numbers, real partners and real reviews (with the students' permission), then set `isSample = false`.
+6. **Colours and fonts** — the `@theme` block at the top of `src/app/globals.css`.
+7. **Logo** — `src/components/logo.tsx` and `src/app/icon.svg`.
 
 ## Contact form emails
 
-The form posts to `src/app/api/contact/route.ts`. To get enquiries by email, create a free account at [resend.com](https://resend.com), verify your domain, then add these environment variables (in Vercel: Project → Settings → Environment Variables):
+Both the contact page form and the "book free counselling" forms post to `src/app/api/contact/route.ts`. Each enquiry includes a `source` so you know which form it came from. To get enquiries by email, create a free account at [resend.com](https://resend.com), verify your domain, then add these environment variables (in Vercel: Project → Settings → Environment Variables):
 
 ```
 RESEND_API_KEY=re_xxx

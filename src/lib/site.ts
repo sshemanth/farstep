@@ -1,3 +1,5 @@
+import { countryPages } from "./countries";
+
 // Brand settings. Change these to your real details — everything else reads from here.
 export const site = {
   name: "Farstep",
@@ -15,9 +17,14 @@ export const site = {
   ],
 };
 
-export const nav = [
+export const nav: { label: string; href: string; children?: { label: string; href: string }[] }[] = [
+  {
+    label: "Study abroad",
+    href: "/study-abroad",
+    children: countryPages.map((c) => ({ label: c.name, href: `/study-abroad/${c.slug}` })),
+  },
   { label: "Services", href: "/services" },
   { label: "Course finder", href: "/course-finder" },
   { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" },
-] as const;
+];

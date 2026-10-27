@@ -109,16 +109,6 @@ export const journey = [
   },
 ] as const;
 
-export const destinations = [
-  { country: "United Kingdom", code: "UK", tone: "sun" },
-  { country: "United States", code: "USA", tone: "flamingo" },
-  { country: "Canada", code: "CAN", tone: "mint" },
-  { country: "Australia", code: "AUS", tone: "white" },
-  { country: "Ireland", code: "IRL", tone: "mint" },
-  { country: "Germany", code: "GER", tone: "sun" },
-  { country: "New Zealand", code: "NZ", tone: "flamingo" },
-] as const;
-
 export const faqs = [
   {
     q: "Is the first session really free?",

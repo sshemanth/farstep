@@ -26,12 +26,13 @@ export async function POST(request: Request) {
     service: clean(body.service, 80),
     start: clean(body.start, 80),
     message: clean(body.message, 4000),
+    source: clean(body.source, 80) || "Contact page",
   };
 
   const errors: Record<string, string> = {};
   if (!enquiry.name) errors.name = "Name is required.";
   if (!/^\S+@\S+\.\S+$/.test(enquiry.email)) errors.email = "A valid email is required.";
-  if (!enquiry.message) errors.message = "Message is required.";
+  if (!enquiry.message && !enquiry.phone) errors.message = "Add a message or a phone number.";
   if (Object.keys(errors).length) return Response.json({ errors }, { status: 422 });
 
   const { RESEND_API_KEY, CONTACT_TO_EMAIL, CONTACT_FROM_EMAIL } = process.env;

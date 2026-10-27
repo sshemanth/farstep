@@ -2,11 +2,12 @@ import Link from "next/link";
 import { Logo } from "./logo";
 import { nav, site } from "@/lib/site";
 import { services } from "@/lib/content";
+import { countryPages } from "@/lib/countries";
 
 export function SiteFooter() {
   return (
     <footer className="on-dark mt-24 bg-ink text-white">
-      <div className="mx-auto grid max-w-7xl gap-12 px-4 py-16 sm:px-6 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
+      <div className="mx-auto grid max-w-7xl gap-12 px-4 py-16 sm:px-6 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr_1fr]">
         <div className="max-w-xs">
           <Logo light />
           <p className="mt-4 text-white/75">
@@ -17,10 +18,23 @@ export function SiteFooter() {
         <div>
           <h2 className="font-sans text-sm font-bold text-sun">Pages</h2>
           <ul className="mt-4 space-y-2">
-            {nav.map((n) => (
+            {nav.filter((n) => !n.children).map((n) => (
               <li key={n.href}>
                 <Link href={n.href} className="text-white/85 hover:text-white hover:underline">
                   {n.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div>
+          <h2 className="font-sans text-sm font-bold text-sun">Study abroad</h2>
+          <ul className="mt-4 space-y-2">
+            {countryPages.map((c) => (
+              <li key={c.slug}>
+                <Link href={`/study-abroad/${c.slug}`} className="text-white/85 hover:text-white hover:underline">
+                  {c.name}
                 </Link>
               </li>
             ))}
